@@ -33,6 +33,4 @@ jobs:
     - name: Build project
       run: pnpm run build
 
-    - name: Start development server
-      run: pnpm run start
 

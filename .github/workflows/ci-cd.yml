@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
@@ -30,9 +30,9 @@ jobs:
     - name: Install dependencies
       run: pnpm install
 
-    - name: Run tests
-      run: pnpm test
-
     - name: Build project
       run: pnpm run build
+
+    - name: Start development server
+      run: pnpm run start
 

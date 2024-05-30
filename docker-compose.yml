@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ecommerce_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: Pass123.
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: mysql://admin:Pass123.@db:3306/ecommerce_db
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_bmVhdC1iYXQtNzUuY2xlcmsuYWNjb3VudHMuZGV2JA
+      CLERK_SECRET_KEY: sk_test_fhEZwMHj7Ezh1ERMFkgHWSoWu71QfAqQgwLwJnbti3
+      NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
+      NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
+      NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: /
+      NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: /
+      NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: "daf1fjngk"
+      STRIPE_API_KEY: sk_test_51OzTGqLnncNs3MD5xKH9ZtN50LASLLjoDQcrZSQtr6Yim7ySwMeLpYgbCQp43fe0m2mbvbd6FR1ykKfjd7eozmK300itVSVDCX
+      FRONTEND_STORE_URL: http://localhost:3001
+      STRIPE_WEBHOOK_SECRET: whsec_3d541c1cd8cb894e89220607bcf0609df0ff5cff7e75e388fcc842592b1992b2
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge
